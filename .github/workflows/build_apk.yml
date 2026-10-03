@@ -1,0 +1,46 @@
+name: Build Android APK
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Checkout kode dari repositori GitHub
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    # 2. Setup Java Development Kit (JDK)
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+
+    # 3. Setup SDK Flutter
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.19.x'
+        channel: 'stable'
+        cache: true
+
+    # 4. Unduh paket dependensi Flutter
+    - name: Install Dependencies
+      run: flutter pub get
+
+    # 5. Build APK Release
+    - name: Build APK
+      run: flutter build apk --release
+
+    # 6. Upload APK ke tab Artifacts di GitHub Actions
+    - name: Upload APK Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: primbon-jawa-release-apk
+        path: build/app/outputs/flutter-apk/app-release.apk
