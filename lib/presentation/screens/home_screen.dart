@@ -35,6 +35,17 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(height: 16),
             _buildMenuCard(
               context,
+              title: 'Kalender Jawa Interaktif',
+              subtitle: 'Lihat pasaran & weton dalam tampilan kalender',
+              icon: Icons.calendar_month,
+              onTap: () => Navigator.push(
+    context,
+    MaterialPageRoute(builder: (_) => const KalenderJawaScreen()),
+  ),
+),
+
+            _buildMenuCard(
+              context,
               title: 'Tafsir Mimpi & Firasat',
               subtitle: 'Pencarian Makna & Isyarat Alam',
               icon: Icons.search_rounded,
