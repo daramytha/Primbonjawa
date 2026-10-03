@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-// Import layar dari folder yang sama (lib/presentation/screens/)
+// Import layar dari folder yang sama (lib/screens/)
 import 'weton_screen.dart';
 import 'jodoh_screen.dart';
 import 'mimpi_screen.dart';
