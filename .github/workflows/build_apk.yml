@@ -30,9 +30,9 @@ jobs:
         channel: 'stable'
         cache: true
 
-    # 4. Re-generate struktur folder Android resmi
+    # 4. Re-generate struktur folder Android dengan nama proyek yang sesuai pubspec.yaml
     - name: Repair Android Project Structure
-      run: flutter create . --platforms=android
+      run: flutter create . --platforms=android --project-name=primbon_jawa_app --org=com.example
 
     # 5. Unduh dependensi Flutter
     - name: Install Dependencies
