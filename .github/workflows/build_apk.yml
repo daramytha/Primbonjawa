@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # 1. Checkout kode dari repositori GitHub
+    # 1. Checkout kode dari repositori
     - name: Checkout Repository
       uses: actions/checkout@v4
 
@@ -22,7 +22,7 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
-    # 3. Setup SDK Flutter
+    # 3. Setup Framework Flutter
     - name: Set up Flutter
       uses: subosito/flutter-action@v2
       with:
@@ -30,15 +30,19 @@ jobs:
         channel: 'stable'
         cache: true
 
-    # 4. Unduh paket dependensi Flutter
+    # 4. Re-generate struktur folder Android resmi
+    - name: Repair Android Project Structure
+      run: flutter create . --platforms=android
+
+    # 5. Unduh dependensi Flutter
     - name: Install Dependencies
       run: flutter pub get
 
-    # 5. Build APK Release
+    # 6. Build APK Release
     - name: Build APK
       run: flutter build apk --release
 
-    # 6. Upload APK ke tab Artifacts di GitHub Actions
+    # 7. Upload file APK ke Artifacts
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4
       with:
