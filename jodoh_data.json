@@ -1,0 +1,10 @@
+[
+  {"category": "PEGAT", "remainder": 1, "meaning": "Masalah perselisihan atau ekonomi sering muncul dalam rumah tangga.", "advice": "Perbanyak komunikasi jujur, saling mengalah, dan kelola keuangan bersama secara transparan."},
+  {"category": "RATU", "remainder": 2, "meaning": "Pasangan sangat cocok, dihormati oleh lingkungan dan sanak keluarga.", "advice": "Pertahankan keharmonisan dan tetap rendah hati kepada sesama."},
+  {"category": "JODOH", "remainder": 3, "meaning": "Cocok dan memang jodoh sejati. Saling melengkapi dan menerima kekurangan.", "advice": "Tetap saling menjaga kasih sayang dan pengertian hingga tua."},
+  {"category": "TOPO", "remainder": 4, "meaning": "Awalnya penuh perjuangan atau prihatin, namun akan sukses dan bahagia di kemudian hari.", "advice": "Kuncinya adalah kesabaran dan saling bersinergi melewati masa-masa awal."},
+  {"category": "TINARI", "remainder": 5, "meaning": "Mudah mencari rezeki, sering mendapatkan keberuntungan dan kebahagiaan.", "advice": "Jangan lupa bersyukur dan banyak berbagi rezeki kepada sesama."},
+  {"category": "PADU", "remainder": 6, "meaning": "Sering terjadi percekcokan kecil, namun tidak sampai merusak rumah tangga.", "advice": "Turunkan ego masing-masing dan hindari membesar-besarkan masalah sepele."},
+  {"category": "SUJANAN", "remainder": 7, "meaning": "Sering diuji dengan perselisihan atau prasangka antar pasangan.", "advice": "Bangun kepercayaan yang kuat dan perbanyak musyawarah keluarga."},
+  {"category": "PESTHI", "remainder": 0, "meaning": "Rumah tangga tenteram, rukun, damai, dan penuh kedamaian.", "advice": "Jaga rasa saling menghargai agar suasana damai terus terwujud."}
+]
