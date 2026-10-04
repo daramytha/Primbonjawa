@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-// Import layar dari folder yang sama (lib/screens/)
-import 'package:primbon_jawa_app/screens/weton_screen.dart';
-import 'package:primbon_jawa_app/screens/jodoh_screen.dart';
-import 'package:primbon_jawa_app/screens/mimpi_screen.dart';
-import 'package:primbon_jawa_app/screens/nogodino_screen.dart';
-import 'package:primbon_jawa_app/screens/kalender_jawa_screen.dart';
+// Import file-file screen yang berada di folder lib/screens/
+import 'weton_screen.dart';
+import 'jodoh_screen.dart';
+import 'mimpi_screen.dart';
+import 'nogodino_screen.dart';
+import 'kalender_jawa_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
