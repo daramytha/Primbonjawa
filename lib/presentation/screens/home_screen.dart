@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-// Import file-file screen yang berada di folder lib/screens/
+// Import relative dari folder yang sama (lib/presentation/screens/)
+import 'kalender_jawa_screen.dart';
 import 'weton_screen.dart';
 import 'jodoh_screen.dart';
-import 'mimpi_screen.dart';
+import 'tafsir_mimpi_screen.dart';
 import 'nogodino_screen.dart';
-import 'kalender_jawa_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -123,7 +123,7 @@ class HomeScreen extends StatelessWidget {
               iconColor: Colors.indigo,
               onTap: () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (_) => const MimpiScreen()),
+                MaterialPageRoute(builder: (_) => const TafsirMimpiScreen()),
               ),
             ),
 
@@ -161,7 +161,8 @@ class HomeScreen extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
       ),
       child: ListTile(
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
         leading: CircleAvatar(
           backgroundColor: iconColor.withOpacity(0.15),
           child: Icon(icon, color: iconColor),
