@@ -5,6 +5,7 @@ import 'kalender_jawa_screen.dart';
 import 'weton_screen.dart';
 import 'jodoh_screen.dart';
 import 'tafsir_mimpi_screen.dart';
+import 'sukerta_screen.dart';
 import 'nogodino_screen.dart';
 
 class HomeScreen extends StatelessWidget {
