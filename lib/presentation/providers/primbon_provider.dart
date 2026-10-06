@@ -6,6 +6,50 @@ class PrimbonProvider extends ChangeNotifier {
   void initData() {
     notifyListeners();
   }
+// Data Katuranggan / Anak Sukerta
+final List<Map<String, String>> _dataSukerta = [
+  {
+    'nama': 'Sendang Kapit Pancuran',
+    'urutan': 'Perempuan - Laki-laki - Perempuan',
+    'deskripsi':
+        'Anak laki-laki tunggal yang diapit oleh dua anak perempuan (kakak dan adik perempuan).',
+  },
+  {
+    'nama': 'Pancuran Kapit Sendang',
+    'urutan': 'Laki-laki - Perempuan - Laki-laki',
+    'deskripsi':
+        'Anak perempuan tunggal yang diapit oleh dua anak laki-laki (kakak dan adik laki-laki).',
+  },
+  {
+    'nama': 'Ontang-Anting',
+    'urutan': 'Anak Tunggal Laki-laki',
+    'deskripsi': 'Anak tunggal laki-laki tanpa saudara kandung.',
+  },
+  {
+    'nama': 'Unting-Unting',
+    'urutan': 'Anak Tunggal Perempuan',
+    'deskripsi': 'Anak tunggal perempuan tanpa saudara kandung.',
+  },
+  {
+    'nama': 'Uger-Uger Lawang',
+    'urutan': 'Laki-laki - Laki-laki',
+    'deskripsi': 'Dua saudara kandung yang keduanya laki-laki.',
+  },
+  {
+    'nama': 'Kembang Sepasang',
+    'urutan': 'Perempuan - Perempuan',
+    'deskripsi': 'Dua saudara kandung yang keduanya perempuan.',
+  },
+  {
+    'nama': 'Kedhana Kedhini',
+    'urutan': 'Laki-laki - Perempuan',
+    'deskripsi': 'Dua saudara kandung terdiri dari satu laki-laki dan satu perempuan.',
+  },
+];
+
+List<Map<String, String>> get dataSukerta => _dataSukerta;
+
+  
 
   // Master Data Tafsir Mimpi Lengkap
   final List<Map<String, String>> _allTafsir = [
