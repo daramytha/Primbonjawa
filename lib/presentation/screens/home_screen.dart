@@ -127,6 +127,18 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
 
+            _buildMenuCard(
+  context,
+  title: 'Anak Sukerta / Kelahiran',
+  subtitle: 'Cek istilah & jenis urutan kelahiran anak Jawa',
+  icon: Icons.child_friendly,
+  iconColor: Colors.purple,
+  onTap: () => Navigator.push(
+    context,
+    MaterialPageRoute(builder: (_) => const SukertaScreen()),
+  ),
+);
+
             // --- MENU 5: NOGO DINO (NAGA HARI) ---
             _buildMenuCard(
               context,
