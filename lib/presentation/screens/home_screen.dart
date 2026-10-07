@@ -146,7 +146,7 @@ class HomeScreen extends StatelessWidget {
               context,
               title: 'Nogo Dino (Arah Rezeki)',
               subtitle: 'Tentukan arah keberuntungan & hindari arah pantangan',
-              icon: Icons.teal,
+              icon: Icons.explore,
               iconColor: Colors.teal,
               onTap: () => Navigator.push(
                 context,
