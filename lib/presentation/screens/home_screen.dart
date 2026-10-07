@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-// Import relative dari folder yang sama (lib/presentation/screens/)
+// Import relative dari folder yang sama
 import 'kalender_jawa_screen.dart';
 import 'weton_screen.dart';
 import 'jodoh_screen.dart';
@@ -128,24 +128,25 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
 
+            // --- MENU 5: ANAK SUKERTA / KELAHIRAN ---
             _buildMenuCard(
-  context,
-  title: 'Anak Sukerta / Kelahiran',
-  subtitle: 'Cek istilah & jenis urutan kelahiran anak Jawa',
-  icon: Icons.child_friendly,
-  iconColor: Colors.purple,
-  onTap: () => Navigator.push(
-    context,
-    MaterialPageRoute(builder: (_) => const SukertaScreen()),
-  ),
-);
+              context,
+              title: 'Anak Sukerta / Kelahiran',
+              subtitle: 'Cek istilah & jenis urutan kelahiran anak Jawa',
+              icon: Icons.child_friendly,
+              iconColor: Colors.purple,
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const SukertaScreen()),
+              ),
+            ),
 
-            // --- MENU 5: NOGO DINO (NAGA HARI) ---
+            // --- MENU 6: NOGO DINO (NAGA HARI) ---
             _buildMenuCard(
               context,
               title: 'Nogo Dino (Arah Rezeki)',
               subtitle: 'Tentukan arah keberuntungan & hindari arah pantangan',
-              icon: Icons.explore,
+              icon: Icons.teal,
               iconColor: Colors.teal,
               onTap: () => Navigator.push(
                 context,
