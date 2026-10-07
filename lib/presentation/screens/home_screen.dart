@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 // Import relative dari folder yang sama
+import 'tahlilan_screen.dart';
 import 'kalender_jawa_screen.dart';
 import 'weton_screen.dart';
 import 'jodoh_screen.dart';
@@ -151,6 +152,19 @@ class HomeScreen extends StatelessWidget {
               onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(builder: (_) => const NogoDinoScreen()),
+              ),
+            ),
+
+                        // --- MENU 7: HITUNG PERINGATAN MENINGGAL (TAHLILAN) ---
+            _buildMenuCard(
+              context,
+              title: 'Peringatan Meninggal (Tahlilan)',
+              subtitle: 'Hitung 7, 40, 100 hari, Mendak, hingga 1000 hari',
+              icon: Icons.access_time_filled,
+              iconColor: Colors.brown,
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const TahlilanScreen()),
               ),
             ),
           ],
