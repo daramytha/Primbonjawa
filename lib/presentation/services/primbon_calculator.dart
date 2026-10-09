@@ -1,116 +1,207 @@
-class PrimbonCalculator {
-  // Daftar Pasaran Jawa
-  static const List<String> _pasaranList = [
-    'Legi',
-    'Pahing',
-    'Pon',
-    'Wage',
-    'Kliwon'
-  ];
+import 'package:flutter/material.dart';
+import '../services/primbon_calculator.dart';
 
-  // Daftar Hari Masehi
-  static const List<String> _hariList = [
-    'Senin',
-    'Selasa',
-    'Rabu',
-    'Kamis',
-    'Jumat',
-    'Sabtu',
-    'Minggu'
-  ];
+class TahlilanScreen extends StatefulWidget {
+  const TahlilanScreen({super.key});
 
-  // Nilai Neptu Hari
-  static const Map<int, int> _neptuHari = {
-    DateTime.monday: 4,
-    DateTime.tuesday: 3,
-    DateTime.wednesday: 7,
-    DateTime.thursday: 8,
-    DateTime.friday: 6,
-    DateTime.saturday: 9,
-    DateTime.sunday: 5,
-  };
+  @override
+  State<TahlilanScreen> createState() => _TahlilanScreenState();
+}
 
-  // Nilai Neptu Pasaran (0: Legi, 1: Pahing, dst)
-  static const List<int> _neptuPasaran = [5, 9, 7, 4, 8];
+class _TahlilanScreenState extends State<TahlilanScreen> {
+  DateTime _selectedDate = DateTime.now();
 
-  // Method mendapatkan Pasaran berdasarkan tanggal
-  static String getPasaran(DateTime date) {
-    // Tanggal acuan: 1 Januari 1900 jatuh pada hari Senin Pahing (index pasaran 1)
-    final anchorDate = DateTime(1900, 1, 1);
-    final difference = date.difference(anchorDate).inDays;
-    
-    int pasaranIndex = (difference + 1) % 5;
-    if (pasaranIndex < 0) {
-      pasaranIndex += 5;
-    }
-    return _pasaranList[pasaranIndex];
+  // Hari H dihitung sebagai hari ke-1
+  DateTime _calculateDate(int days) {
+    return _selectedDate.add(Duration(days: days - 1));
   }
 
-  // Method mendapatkan Weton lengkap (misal: "Senin Pahing")
-  static String getWeton(DateTime date) {
-    final hariIndex = date.weekday - 1;
-    final namaHari = _hariList[hariIndex];
-    final namaPasaran = getPasaran(date);
-    return '$namaHari $namaPasaran';
+  // Mendak 1 dan Mendak 2 berdasarkan siklus tahunan/weton Jawa
+  // Dalam tradisi Jawa, 1 tahun dihitung 354-355 hari (tahun Hijriah/Jawa) atau penyesuaian weton
+  DateTime _calculateMendakWeton(int years) {
+    // Pendekatan hitungan hari Jawa (1 tahun hijriah/jawa sekitar 354 atau 355 hari)
+    int targetDays = years == 1 ? 354 : (354 * 2); 
+    return _selectedDate.add(Duration(days: targetDays));
   }
 
-  // Method menghitung total Neptu (Hari + Pasaran)
-  static int hitungNeptu(DateTime date) {
-    final neptuH = _neptuHari[date.weekday] ?? 0;
-    
-    final pasaranStr = getPasaran(date);
-    final pasaranIdx = _pasaranList.indexOf(pasaranStr);
-    final neptuP = pasaranIdx != -1 ? _neptuPasaran[pasaranIdx] : 0;
+  String _formatDate(DateTime date) {
+    final List<String> namaBulan = [
+      'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+      'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+    ];
+    final List<String> namaHari = [
+      'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'
+    ];
 
-    return neptuH + neptuP;
+    final hari = namaHari[date.weekday - 1];
+    final bulan = namaBulan[date.month - 1];
+    final weton = PrimbonCalculator.getWeton(date);
+
+    return '$hari, ${date.day} $bulan ${date.year}\n(Weton: $weton)';
   }
 
-  // Method hitung kecocokan jodoh berdasarkan neptu
-  static Map<String, String> hitungKecocokanJodoh(int neptuPria, int neptuWanita) {
-    final total = neptuPria + neptuWanita;
-    final sisa = total % 8;
+  @override
+  Widget build(BuildContext context) {
+    final List<Map<String, dynamic>> peringatanList = [
+      {
+        'title': '3 Hari (Telong Dina)',
+        'date': _calculateDate(3),
+        'desc': 'Peringatan hari ke-3 meninggalnya almarhum/almarhumah.'
+      },
+      {
+        'title': '7 Hari (Pitung Dina)',
+        'date': _calculateDate(7),
+        'desc': 'Peringatan hari ke-7 (Tahlilan utama seminggu).'
+      },
+      {
+        'title': '40 Hari (Patang Puluh Dina)',
+        'date': _calculateDate(40),
+        'desc': 'Peringatan hari ke-40 meninggal dunia.'
+      },
+      {
+        'title': '100 Hari (Nyatus Dina)',
+        'date': _calculateDate(100),
+        'desc': 'Peringatan hari ke-100 meninggal dunia.'
+      },
+      {
+        'title': '1 Tahun / Mendak Pisan (Weton Jawa)',
+        'date': _calculateMendakWeton(1),
+        'desc': 'Peringatan 1 tahun berdasarkan siklus penanggalan/weton Jawa.'
+      },
+      {
+        'title': '2 Tahun / Mendak Pindo (Weton Jawa)',
+        'date': _calculateMendakWeton(2),
+        'desc': 'Peringatan 2 tahun berdasarkan siklus penanggalan/weton Jawa.'
+      },
+      {
+        'title': '1000 Hari (Nyewu Dina)',
+        'date': _calculateDate(1000),
+        'desc': 'Peringatan puncak 1000 hari almarhum/almarhumah.'
+      },
+    ];
 
-    switch (sisa) {
-      case 1:
-        return {
-          'kategori': 'PEGAT',
-          'deskripsi': 'Masalah perselisihan atau ekonomi sering muncul dalam rumah tangga.',
-        };
-      case 2:
-        return {
-          'kategori': 'RATU',
-          'deskripsi': 'Pasangan yang sangat harmonis, disegani tetangga dan lingkungan sekitar.',
-        };
-      case 3:
-        return {
-          'kategori': 'JODOH',
-          'deskripsi': 'Cocok satu sama lain, bisa menerima kelebihan dan kekurangan pasangan.',
-        };
-      case 4:
-        return {
-          'kategori': 'TOPO',
-          'deskripsi': 'Awalnya sering mengalami kesukaran, namun akan bahagia di masa mendatang.',
-        };
-      case 5:
-        return {
-          'kategori': 'TINARI',
-          'deskripsi': 'Akan menemukan kebahagiaan, kemudahan mencari rezeki, dan sering mendapat keberuntungan.',
-        };
-      case 6:
-        return {
-          'kategori': 'PADU',
-          'deskripsi': 'Sering mengalami pertengkaran untuk hal-hal sepele, namun tidak sampai bercerai.',
-        };
-      case 7:
-        return {
-          'kategori': 'SUJANAN',
-          'deskripsi': 'Sering mengalami pertengkaran terkait masalah perselingkuhan atau kecemburuan.',
-        };
-      default:
-        return {
-          'kategori': 'PESTHI',
-          'deskripsi': 'Rukun, tenteram, dan damai sampai tua tanpa kendala berarti.',
-        };
-    }
+    return Scaffold(
+      backgroundColor: const Color(0xFFFAF8F5),
+      appBar: AppBar(
+        title: const Text('Hitung Peringatan Meninggal'),
+        backgroundColor: const Color(0xFF3E2723),
+        foregroundColor: const Color(0xFFFFD700),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            Card(
+              elevation: 2,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Tanggal Meninggal (Hari H):',
+                            style: TextStyle(fontSize: 12, color: Colors.grey),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            _formatDate(_selectedDate),
+                            style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF3E2723),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    ElevatedButton.icon(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF3E2723),
+                        foregroundColor: const Color(0xFFFFD700),
+                      ),
+                      icon: const Icon(Icons.edit_calendar, size: 18),
+                      label: const Text('Pilih'),
+                      onPressed: () async {
+                        final picked = await showDatePicker(
+                          context: context,
+                          initialDate: _selectedDate,
+                          firstDate: DateTime(1900),
+                          lastDate: DateTime(2100),
+                        );
+                        if (picked != null) {
+                          setState(() => _selectedDate = picked);
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            Expanded(
+              child: ListView.builder(
+                itemCount: peringatanList.length,
+                itemBuilder: (context, index) {
+                  final item = peringatanList[index];
+                  return Card(
+                    margin: const EdgeInsets.only(bottom: 12),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: ListTile(
+                      leading: CircleAvatar(
+                        backgroundColor:
+                            const Color(0xFF3E2723).withOpacity(0.1),
+                        child: const Icon(
+                          Icons.event_available,
+                          color: Color(0xFF3E2723),
+                        ),
+                      ),
+                      title: Text(
+                        item['title'],
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF3E2723),
+                        ),
+                      ),
+                      subtitle: Padding(
+                        padding: const EdgeInsets.only(top: 4.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              _formatDate(item['date']),
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFFD84315),
+                              ),
+                            ),
+                            const SizedBox(height: 2),
+                            Text(
+                              item['desc'],
+                              style: const TextStyle(
+                                fontSize: 12,
+                                color: Colors.black54,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
