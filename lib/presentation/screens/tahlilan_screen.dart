@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../services/primbon_calculator.dart';
 
 class TahlilanScreen extends StatefulWidget {
   const TahlilanScreen({super.key});
@@ -10,49 +11,53 @@ class TahlilanScreen extends StatefulWidget {
 class _TahlilanScreenState extends State<TahlilanScreen> {
   DateTime _selectedDate = DateTime.now();
 
-  // Perhitungan tanggal meninggal (Hari H dihitung sebagai hari ke-1)
+  // Hari H dihitung sebagai hari ke-1
   DateTime _calculateDate(int days) {
     return _selectedDate.add(Duration(days: days - 1));
   }
 
-  // Perhitungan 1 tahun & 2 tahun (Mendak)
-  DateTime _calculateYear(int years) {
-    return DateTime(
-      _selectedDate.year + years,
-      _selectedDate.month,
-      _selectedDate.day,
-    );
+  // Mendak 1 dan Mendak 2 berdasarkan siklus tahunan/weton Jawa
+  DateTime _calculateMendakWeton(int years) {
+    int targetDays = years == 1 ? 354 : (354 * 2); 
+    return _selectedDate.add(Duration(days: targetDays));
+  }
+
+  // Konversi Masehi ke Hijriyah sederhana
+  String _getHijriDate(DateTime date) {
+    int julianDay = (date.millisecondsSinceEpoch / (1000 * 60 * 60 * 24)).floor() + 2440588;
+    int l = julianDay - 1948440 + 10632;
+    int n = ((l - 1) / 10651).floor();
+    l = l - (10651 * n + 325).floor();
+    int j = ((10 + 11 * l) / 330).floor();
+    int day = l - ((33 * j + 3) / 11).floor() + 1;
+    int month = ((j / 12) + 1).floor();
+    int year = (30 * n + j - 30).floor();
+
+    const monthsHijri = [
+      'Muharram', 'Safar', 'Rabiul Awal', 'Rabiul Akhir',
+      'Jumadil Awal', 'Jumadil Akhir', 'Rajab', 'Sya\'ban',
+      'Ramadhan', 'Syawal', 'Dzulqa\'dah', 'Dzulhijjah'
+    ];
+
+    if (month < 1 || month > 12) return '1 Muharram $year H';
+    return '$day ${monthsHijri[month - 1]} $year H';
   }
 
   String _formatDate(DateTime date) {
     final List<String> namaBulan = [
-      'Januari',
-      'Februari',
-      'Maret',
-      'April',
-      'Mei',
-      'Juni',
-      'Juli',
-      'Agustus',
-      'September',
-      'Oktober',
-      'November',
-      'Desember'
+      'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+      'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
     ];
     final List<String> namaHari = [
-      'Senin',
-      'Selasa',
-      'Rabu',
-      'Kamis',
-      'Jumat',
-      'Sabtu',
-      'Minggu'
+      'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'
     ];
 
     final hari = namaHari[date.weekday - 1];
     final bulan = namaBulan[date.month - 1];
+    final weton = PrimbonCalculator.getWeton(date);
+    final hijri = _getHijriDate(date);
 
-    return '$hari, ${date.day} $bulan ${date.year}';
+    return '$hari, ${date.day} $bulan ${date.year}\n($hijri)\nWeton: $weton';
   }
 
   @override
@@ -79,14 +84,14 @@ class _TahlilanScreenState extends State<TahlilanScreen> {
         'desc': 'Peringatan hari ke-100 meninggal dunia.'
       },
       {
-        'title': '1 Tahun (Mendak Pisan)',
-        'date': _calculateYear(1),
-        'desc': 'Peringatan 1 tahun meninggal dunia.'
+        'title': '1 Tahun / Mendak Pisan (Weton Jawa)',
+        'date': _calculateMendakWeton(1),
+        'desc': 'Peringatan 1 tahun berdasarkan siklus penanggalan/weton Jawa.'
       },
       {
-        'title': '2 Tahun (Mendak Pindo)',
-        'date': _calculateYear(2),
-        'desc': 'Peringatan 2 tahun meninggal dunia.'
+        'title': '2 Tahun / Mendak Pindo (Weton Jawa)',
+        'date': _calculateMendakWeton(2),
+        'desc': 'Peringatan 2 tahun berdasarkan siklus penanggalan/weton Jawa.'
       },
       {
         'title': '1000 Hari (Nyewu Dina)',
@@ -128,7 +133,7 @@ class _TahlilanScreenState extends State<TahlilanScreen> {
                           Text(
                             _formatDate(_selectedDate),
                             style: const TextStyle(
-                              fontSize: 15,
+                              fontSize: 13,
                               fontWeight: FontWeight.bold,
                               color: Color(0xFF3E2723),
                             ),
@@ -149,6 +154,16 @@ class _TahlilanScreenState extends State<TahlilanScreen> {
                           initialDate: _selectedDate,
                           firstDate: DateTime(1900),
                           lastDate: DateTime(2100),
+                          builder: (context, child) {
+                            return MediaQuery(
+                              data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+                              child: Localizations.override(
+                                context: context,
+                                locale: const Locale('id', 'ID'),
+                                child: child!,
+                              ),
+                            );
+                          },
                         );
                         if (picked != null) {
                           setState(() => _selectedDate = picked);
@@ -198,7 +213,7 @@ class _TahlilanScreenState extends State<TahlilanScreen> {
                                 color: Color(0xFFD84315),
                               ),
                             ),
-                            const SizedBox(height: 2),
+                            const SizedBox(height: 4),
                             Text(
                               item['desc'],
                               style: const TextStyle(
