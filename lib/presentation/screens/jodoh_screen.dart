@@ -14,7 +14,27 @@ class _JodohScreenState extends State<JodohScreen> {
   DateTime? _tglWanita;
   Map<String, String>? _hasilJodoh;
 
-  // Fungsi untuk menampilkan pemilih tanggal
+  String _getHijriDate(DateTime date) {
+    int julianDay = (date.millisecondsSinceEpoch / (1000 * 60 * 60 * 24)).floor() + 2440588;
+    int l = julianDay - 1948440 + 10632;
+    int n = ((l - 1) / 10651).floor();
+    l = l - (10651 * n + 325).floor();
+    int j = ((10 + 11 * l) / 330).floor();
+    int day = l - ((33 * j + 3) / 11).floor() + 1;
+    int month = ((j / 12) + 1).floor();
+    int year = (30 * n + j - 30).floor();
+
+    const monthsHijri = [
+      'Muharram', 'Safar', 'Rabiul Awal', 'Rabiul Akhir',
+      'Jumadil Awal', 'Jumadil Akhir', 'Rajab', 'Sya\'ban',
+      'Ramadhan', 'Syawal', 'Dzulqa\'dah', 'Dzulhijjah'
+    ];
+
+    if (month < 1 || month > 12) return '1 Muharram $year H';
+    return '$day ${monthsHijri[month - 1]} $year H';
+  }
+
+  // Fungsi untuk menampilkan pemilih tanggal dengan format Indonesia
   Future<void> _selectDate(BuildContext context, bool isPria) async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -22,15 +42,22 @@ class _JodohScreenState extends State<JodohScreen> {
       firstDate: DateTime(1900),
       lastDate: DateTime.now(),
       builder: (context, child) {
-        return Theme(
-          data: Theme.of(context).copyWith(
-            colorScheme: const ColorScheme.light(
-              primary: Color(0xFF3E2723), // Warna utama cokelat primbon
-              onPrimary: Colors.white,
-              onSurface: Color(0xFF3E2723),
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+          child: Localizations.override(
+            context: context,
+            locale: const Locale('id', 'ID'),
+            child: Theme(
+              data: Theme.of(context).copyWith(
+                colorScheme: const ColorScheme.light(
+                  primary: Color(0xFF3E2723),
+                  onPrimary: Colors.white,
+                  onSurface: Color(0xFF3E2723),
+                ),
+              ),
+              child: child!,
             ),
           ),
-          child: child!,
         );
       },
     );
@@ -68,7 +95,7 @@ class _JodohScreenState extends State<JodohScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final dateFormat = DateFormat('dd MMMM yyyy');
+    final dateFormat = DateFormat('dd MMMM yyyy', 'id_ID');
 
     return Scaffold(
       backgroundColor: const Color(0xFFFAF8F5),
@@ -95,12 +122,13 @@ class _JodohScreenState extends State<JodohScreen> {
                 subtitle: Text(
                   _tglPria == null
                       ? 'Pilih tanggal lahir...'
-                      : dateFormat.format(_tglPria!),
+                      : '${dateFormat.format(_tglPria!)}\n(${_getHijriDate(_tglPria!)})',
                   style: TextStyle(
                     color: _tglPria == null ? Colors.grey : Colors.black87,
                     fontWeight: _tglPria == null ? FontWeight.normal : FontWeight.bold,
                   ),
                 ),
+                isThreeLine: _tglPria != null,
                 trailing: const Icon(Icons.calendar_today, color: Color(0xFF3E2723)),
                 onTap: () => _selectDate(context, true),
               ),
@@ -120,12 +148,13 @@ class _JodohScreenState extends State<JodohScreen> {
                 subtitle: Text(
                   _tglWanita == null
                       ? 'Pilih tanggal lahir...'
-                      : dateFormat.format(_tglWanita!),
+                      : '${dateFormat.format(_tglWanita!)}\n(${_getHijriDate(_tglWanita!)})',
                   style: TextStyle(
                     color: _tglWanita == null ? Colors.grey : Colors.black87,
                     fontWeight: _tglWanita == null ? FontWeight.normal : FontWeight.bold,
                   ),
                 ),
+                isThreeLine: _tglWanita != null,
                 trailing: const Icon(Icons.calendar_today, color: Color(0xFF3E2723)),
                 onTap: () => _selectDate(context, false),
               ),
