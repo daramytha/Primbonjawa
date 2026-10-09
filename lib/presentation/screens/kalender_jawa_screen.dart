@@ -13,10 +13,7 @@ class _KalenderJawaScreenState extends State<KalenderJawaScreen> {
   DateTime _focusedDay = DateTime.now();
   DateTime _selectedDay = DateTime.now();
 
-  // Fungsi sederhana konversi Masehi ke Hijriyah (pendekatan estimasi kalender qamariyah)
   String _getHijriDate(DateTime date) {
-    // Selisih hari estimasi atau kalkulasi dasar kalender hijriyah
-    // Untuk offline tanpa package berat, kita bisa integrasikan formula atau tampilkan format penanggalan Hijriyah standar
     int julianDay = (date.millisecondsSinceEpoch / (1000 * 60 * 60 * 24)).floor() + 2440588;
     int l = julianDay - 1948440 + 10632;
     int n = ((l - 1) / 10651).floor();
@@ -52,6 +49,7 @@ class _KalenderJawaScreenState extends State<KalenderJawaScreen> {
       body: Column(
         children: [
           TableCalendar(
+            locale: 'id_ID',
             firstDay: DateTime(1900),
             lastDay: DateTime(2100),
             focusedDay: _focusedDay,
