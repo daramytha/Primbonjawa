@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../services/primbon_calculator.dart';
+import '../../services/primbon_calculator.dart';
 
 class WetonScreen extends StatefulWidget {
   const WetonScreen({super.key});
