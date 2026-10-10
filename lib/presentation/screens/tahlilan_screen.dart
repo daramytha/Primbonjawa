@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../services/primbon_calculator.dart';
+import '../services/primbon_calculator.dart';
 
 class TahlilanScreen extends StatefulWidget {
   const TahlilanScreen({super.key});
@@ -17,30 +17,11 @@ class _TahlilanScreenState extends State<TahlilanScreen> {
   }
 
   // Mendak 1 dan Mendak 2 berdasarkan siklus tahunan/weton Jawa
+  // Dalam tradisi Jawa, 1 tahun dihitung 354-355 hari (tahun Hijriah/Jawa) atau penyesuaian weton
   DateTime _calculateMendakWeton(int years) {
+    // Pendekatan hitungan hari Jawa (1 tahun hijriah/jawa sekitar 354 atau 355 hari)
     int targetDays = years == 1 ? 354 : (354 * 2); 
     return _selectedDate.add(Duration(days: targetDays));
-  }
-
-  // Konversi Masehi ke Hijriyah sederhana
-  String _getHijriDate(DateTime date) {
-    int julianDay = (date.millisecondsSinceEpoch / (1000 * 60 * 60 * 24)).floor() + 2440588;
-    int l = julianDay - 1948440 + 10632;
-    int n = ((l - 1) / 10651).floor();
-    l = l - (10651 * n + 325).floor();
-    int j = ((10 + 11 * l) / 330).floor();
-    int day = l - ((33 * j + 3) / 11).floor() + 1;
-    int month = ((j / 12) + 1).floor();
-    int year = (30 * n + j - 30).floor();
-
-    const monthsHijri = [
-      'Muharram', 'Safar', 'Rabiul Awal', 'Rabiul Akhir',
-      'Jumadil Awal', 'Jumadil Akhir', 'Rajab', 'Sya\'ban',
-      'Ramadhan', 'Syawal', 'Dzulqa\'dah', 'Dzulhijjah'
-    ];
-
-    if (month < 1 || month > 12) return '1 Muharram $year H';
-    return '$day ${monthsHijri[month - 1]} $year H';
   }
 
   String _formatDate(DateTime date) {
@@ -55,9 +36,8 @@ class _TahlilanScreenState extends State<TahlilanScreen> {
     final hari = namaHari[date.weekday - 1];
     final bulan = namaBulan[date.month - 1];
     final weton = PrimbonCalculator.getWeton(date);
-    final hijri = _getHijriDate(date);
 
-    return '$hari, ${date.day} $bulan ${date.year}\n($hijri)\nWeton: $weton';
+    return '$hari, ${date.day} $bulan ${date.year}\n(Weton: $weton)';
   }
 
   @override
@@ -133,7 +113,7 @@ class _TahlilanScreenState extends State<TahlilanScreen> {
                           Text(
                             _formatDate(_selectedDate),
                             style: const TextStyle(
-                              fontSize: 13,
+                              fontSize: 14,
                               fontWeight: FontWeight.bold,
                               color: Color(0xFF3E2723),
                             ),
@@ -154,16 +134,6 @@ class _TahlilanScreenState extends State<TahlilanScreen> {
                           initialDate: _selectedDate,
                           firstDate: DateTime(1900),
                           lastDate: DateTime(2100),
-                          builder: (context, child) {
-                            return MediaQuery(
-                              data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
-                              child: Localizations.override(
-                                context: context,
-                                locale: const Locale('id', 'ID'),
-                                child: child!,
-                              ),
-                            );
-                          },
                         );
                         if (picked != null) {
                           setState(() => _selectedDate = picked);
@@ -213,7 +183,7 @@ class _TahlilanScreenState extends State<TahlilanScreen> {
                                 color: Color(0xFFD84315),
                               ),
                             ),
-                            const SizedBox(height: 4),
+                            const SizedBox(height: 2),
                             Text(
                               item['desc'],
                               style: const TextStyle(
