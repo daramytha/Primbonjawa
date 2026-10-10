@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import '../../../services/primbon_calculator.dart';
+import 'package:primbon_jawa_app/services/primbon_calculator.dart';
 
 class JodohScreen extends StatefulWidget {
   const JodohScreen({super.key});
