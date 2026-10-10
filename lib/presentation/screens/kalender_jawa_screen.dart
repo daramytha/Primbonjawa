@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
-import '../../../services/primbon_calculator.dart';
+import 'package:primbon_jawa_app/services/primbon_calculator.dart';
+
 
 class KalenderJawaScreen extends StatefulWidget {
   const KalenderJawaScreen({super.key});
