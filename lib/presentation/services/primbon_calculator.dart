@@ -1,3 +1,19 @@
+library primbon_calculator;
+
+class PrimbonCalculator {
+  static String getWeton(DateTime date) {
+    // ... isi kode method Anda ...
+  }
+
+  static int hitungNeptu(DateTime date) {
+    // ... isi kode method Anda ...
+  }
+
+  static Map<String, String> hitungKecocokanJodoh(int neptuPria, int neptuWanita) {
+    // ... isi kode method Anda ...
+  }
+}
+
 import 'package:flutter/material.dart';
 import '../services/primbon_calculator.dart';
 
