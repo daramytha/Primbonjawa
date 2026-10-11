@@ -19,6 +19,11 @@ class PrimbonCalculator {
     return dayVal + pasaranVal;
   }
 
+  // Alias agar pemanggilan getNeptu maupun hitungNeptu sama-sama valid
+  static int getNeptu(DateTime date) {
+    return hitungNeptu(date);
+  }
+
   static Map<String, String> hitungKecocokanJodoh(int neptuPria, int neptuWanita) {
     int total = neptuPria + neptuWanita;
     String kategori = 'Pegat';
