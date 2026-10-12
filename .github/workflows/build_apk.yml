@@ -27,9 +27,8 @@ jobs:
       - name: Install Dependencies
         run: flutter pub get
 
-      # Ubah perintah build di sini dengan menambahkan --split-per-abi
-      - name: Build Release APK Split per ABI
-        run: flutter build apk --release --split-per-abi
+      - name: Build Release APK
+        run: flutter build apk --release
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
