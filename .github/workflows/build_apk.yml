@@ -27,12 +27,6 @@ jobs:
       - name: Install Dependencies
         run: flutter pub get
 
-      - name: Fix or Upgrade Gradle Wrapper
-        run: |
-          cd android
-          ./gradlew wrapper --gradle-version=7.6.3
-          cd ..
-
       - name: Build Release APK
         run: flutter build apk --release
 
