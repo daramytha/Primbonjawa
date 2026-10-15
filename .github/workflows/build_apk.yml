@@ -29,6 +29,10 @@ jobs:
 
       - name: Build Release APK
         run: flutter build apk --release
+        env:
+          JAVA_HOME: ${{ steps.set-up-java.outputs.result }}
+          # Mengabaikan pemeriksaan versi gradle yang usang
+          SUPPRESS_GRADLE_WARNING: true
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
