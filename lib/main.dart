@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/date_symbol_data_local.dart'; // <-- TAMBAHAN
 import 'core/constants/app_colors.dart';
 import 'presentation/providers/primbon_provider.dart';
 import 'presentation/screens/home_screen.dart';
 
-void main() {
+void main() async { // <-- Ubah jadi async
+  WidgetsFlutterBinding.ensureInitialized(); // <-- WAJIB
+  await initializeDateFormatting('id_ID', null); // <-- WAJIB untuk locale Indonesia
   runApp(const PrimbonJawaApp());
 }
 
