@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:primbon_jawa_app/services/primbon_calculator.dart';
 
-
 class KalenderJawaScreen extends StatefulWidget {
   const KalenderJawaScreen({super.key});
 
@@ -15,7 +14,8 @@ class _KalenderJawaScreenState extends State<KalenderJawaScreen> {
   DateTime _selectedDay = DateTime.now();
 
   String _getHijriDate(DateTime date) {
-    int julianDay = (date.millisecondsSinceEpoch / (1000 * 60 * 60 * 24)).floor() + 2440588;
+    int julianDay =
+        (date.millisecondsSinceEpoch / (1000 * 60 * 60 * 24)).floor() + 2440588;
     int l = julianDay - 1948440 + 10632;
     int n = ((l - 1) / 10651).floor();
     l = l - (10651 * n + 325).floor();
@@ -49,8 +49,9 @@ class _KalenderJawaScreenState extends State<KalenderJawaScreen> {
       ),
       body: Column(
         children: [
+          // --- KALENDER ---
           TableCalendar(
-            locale: 'id_ID',
+            locale: 'id_ID', // Sekarang aman karena sudah diinisialisasi di main.dart
             firstDay: DateTime(1900),
             lastDay: DateTime(2100),
             focusedDay: _focusedDay,
@@ -70,7 +71,8 @@ class _KalenderJawaScreenState extends State<KalenderJawaScreen> {
                 color: Color(0xFFFFD700),
                 shape: BoxShape.circle,
               ),
-              todayTextStyle: TextStyle(color: Color(0xFF3E2723), fontWeight: FontWeight.bold),
+              todayTextStyle: TextStyle(
+                  color: Color(0xFF3E2723), fontWeight: FontWeight.bold),
             ),
             headerStyle: const HeaderStyle(
               formatButtonVisible: false,
@@ -78,60 +80,65 @@ class _KalenderJawaScreenState extends State<KalenderJawaScreen> {
             ),
           ),
           const SizedBox(height: 16),
+
+          // --- INFO PANEL (Dibuat Scroll agar tidak overflow) ---
           Expanded(
-            child: Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(20),
-              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              decoration: BoxDecoration(
-                color: const Color(0xFF3E2723),
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 6,
-                    offset: const Offset(0, 3),
-                  ),
-                ],
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    'Informasi Hari Pilihan:',
-                    style: TextStyle(color: Colors.white70, fontSize: 12),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Weton: $wetonInfo',
-                    style: const TextStyle(
-                      color: Color(0xFFFFD700),
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF3E2723),
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 6,
+                      offset: const Offset(0, 3),
                     ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    'Nilai Neptu: $neptuInfo',
-                    style: const TextStyle(color: Colors.white, fontSize: 14),
-                  ),
-                  const Divider(color: Colors.white24, height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(Icons.nights_stay, color: Color(0xFFFFD700), size: 16),
-                      const SizedBox(width: 6),
-                      Text(
-                        'Hijriyah: $hijriInfo',
-                        style: const TextStyle(
-                          color: Color(0xFFFFD700),
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                        ),
+                  ],
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      'Informasi Hari Pilihan:',
+                      style: TextStyle(color: Colors.white70, fontSize: 12),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Weton: $wetonInfo',
+                      style: const TextStyle(
+                        color: Color(0xFFFFD700),
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
                       ),
-                    ],
-                  ),
-                ],
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      'Nilai Neptu: $neptuInfo',
+                      style: const TextStyle(color: Colors.white, fontSize: 14),
+                    ),
+                    const Divider(color: Colors.white24, height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.nights_stay,
+                            color: Color(0xFFFFD700), size: 16),
+                        const SizedBox(width: 6),
+                        Text(
+                          'Hijriyah: $hijriInfo',
+                          style: const TextStyle(
+                            color: Color(0xFFFFD700),
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
