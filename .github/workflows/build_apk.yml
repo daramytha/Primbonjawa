@@ -28,7 +28,7 @@ jobs:
         run: flutter pub get
 
       - name: Refresh Android Project Structure
-        run: flutter create . --platforms=android
+        run: flutter create . --project-name primbon_jawa_app --platforms=android
 
       - name: Build Release APK
         run: flutter build apk --release
